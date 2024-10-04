@@ -5,8 +5,9 @@ import seaborn as sns
 import plotly.express as px
 import streamlit as st
 
-day_df = pd.read_csv("../data/day.csv")
-hour_df = pd.read_csv("../data/hour.csv")
+day_df = pd.read_csv("cleaned_day.csv")
+
+hour_df = pd.read_csv("cleaned_hour.csv")
 
 day_df.rename(columns={
     'dteday': 'dateday',
@@ -59,7 +60,7 @@ hour_df['weathersit'] = hour_df['weathersit'].map({
     3: 'Light Snow/Rain',
     4: 'Severe Weather'
 })
-monthly_rent_df = day_df.resample(rule='M', on='dateday').agg({
+monthly_rent_df = day_df.resample(rule='ME', on='dateday').agg({
     "casual": "sum",
     "registered": "sum",
     "count": "sum"
