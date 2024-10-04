@@ -43,7 +43,7 @@ hour_df.rename(columns={
 # mengubah dteday menjadi datetime
 hour_df["dateday"] = pd.to_datetime(hour_df["dateday"])
 
-monthly_rent_df = day_df.resample(rule='M', on='dateday').agg({
+monthly_rent_df = day_df.resample(rule='ME', on='dateday').agg({
     "casual": "sum",
     "registered": "sum",
     "count": "sum"
