@@ -12,3 +12,4 @@ cd dashboard
 ```
 streamlit run dashboard.py
 ```
+or use this link  [View Streamlit](https://asterracea-submission-dashboarddashboard-43bygl.streamlit.app/) 
