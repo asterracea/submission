@@ -5,9 +5,9 @@ import seaborn as sns
 import plotly.express as px
 import streamlit as st
 
-day_df = pd.read_csv("dashboard/cleaned_day.csv")
+day_df = pd.read_csv("data/day.csv")
 
-hour_df = pd.read_csv("dashboard/cleaned_hour.csv")
+hour_df = pd.read_csv("data/hour.csv")
 
 day_df.rename(columns={
     'dteday': 'dateday',
