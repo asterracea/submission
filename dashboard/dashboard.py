@@ -4,11 +4,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
 import streamlit as st
-import joblib
+# import joblib
 
-day_df = pd.read_csv("../data/day.csv")
+day_df = pd.read_csv("data/day.csv")
 
-hour_df = pd.read_csv("../data/hour.csv")
+hour_df = pd.read_csv("data/hour.csv")
 
 day_df.rename(columns={
     'dteday': 'dateday',
