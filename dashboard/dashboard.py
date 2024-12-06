@@ -135,7 +135,7 @@ with col3:
 st.markdown("---")
 
 # Load the model
-rf_model = joblib.load('/bike_rental_model.pkl')
+rf_model = joblib.load('bike_rental_model.pkl')
 
 # Fungsi prediksi
 def predict_bike_rentals(season, weathersit, temp, hum, hour):
