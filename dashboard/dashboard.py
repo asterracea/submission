@@ -4,10 +4,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
 import streamlit as st
+import joblib
 
-day_df = pd.read_csv("data/day.csv")
+day_df = pd.read_csv("../data/day.csv")
 
-hour_df = pd.read_csv("data/hour.csv")
+hour_df = pd.read_csv("../data/hour.csv")
 
 day_df.rename(columns={
     'dteday': 'dateday',
@@ -44,7 +45,7 @@ hour_df.rename(columns={
 # mengubah dteday menjadi datetime
 hour_df["dateday"] = pd.to_datetime(hour_df["dateday"])
 
-monthly_rent_df = day_df.resample(rule='ME', on='dateday').agg({
+monthly_rent_df = day_df.resample(rule='M', on='dateday').agg({
     "casual": "sum",
     "registered": "sum",
     "count": "sum"
@@ -60,7 +61,7 @@ hour_df['weathersit'] = hour_df['weathersit'].map({
     3: 'Light Snow/Rain',
     4: 'Severe Weather'
 })
-monthly_rent_df = day_df.resample(rule='ME', on='dateday').agg({
+monthly_rent_df = day_df.resample(rule='M', on='dateday').agg({
     "casual": "sum",
     "registered": "sum",
     "count": "sum"
@@ -133,6 +134,38 @@ with col3:
 # Menampilkan pemisah horizontal
 st.markdown("---")
 
+# Load the model
+rf_model = joblib.load("bike_rental_model.pkl")
+
+# Fungsi prediksi
+def predict_bike_rentals(season, weathersit, temp, hum, hour):
+    input_data = pd.DataFrame({
+        'season': [season],
+        'weathersit': [weathersit],
+        'temp': [temp],
+        'hum': [hum],
+        'hr': [hour]
+    })
+    return rf_model.predict(input_data)[0]
+
+# Streamlit UI
+st.title("Bike Rental Prediction")
+
+# Input for prediction
+
+season = st.selectbox("Season", [1, 2, 3, 4])  # Map these to the encoded values
+weathersit = st.selectbox("Weather Condition", [1, 2, 3, 4])
+# season = st.selectbox("Season", hour_df['season'])
+# weathersit = st.selectbox("Weather Condition", [(1, "Clear"), (2, "Mist + Cloudy"), (3, "Light Rain"), (4, "Heavy Rain")], format_func=lambda x: x[1])
+
+temp = st.slider("Temperature (normalized)", 0.0, 1.0, 0.5)
+hum = st.slider("Humidity (normalized)", 0.0, 1.0, 0.5)
+hour = st.slider("Hour", 0, 23, 12)
+
+# Predict button
+if st.button("Predict"):
+    prediction = predict_bike_rentals(season, weathersit, temp, hum, hour)
+    st.success(f"Predicted Rentals: {int(prediction)}")
 
 #Visualisai
 st.subheader("Bike Rental Trends in Recent Years")
